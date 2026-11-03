@@ -1,8 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-df = pd.read_csv('csv/Video_Games_Sales.csv')
+import numpy as np
+df = pd.read_csv('csv/Video_Games_Sales_Final.csv')
 
 # print(df.info())
 # print(df.describe())
