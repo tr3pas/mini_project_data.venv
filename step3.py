@@ -8,6 +8,7 @@ sns.set_theme(style="whitegrid")
 df = pd.read_csv('csv/Video_Game_Sales_Final.csv')
 print(df.shape)
 print(df.head())
+print(df.info())
 
 annual = df.groupby('year')['global_sales'].sum()
 print(annual.tail(8))
@@ -64,25 +65,60 @@ print(annual.tail(8))
 # plt.show()
 
 
-top_genre = (df.groupby('genre')
-             ['global_sales'].sum()
-             .sort_values(ascending=False)
-             .head(10)
-             .reset_index())
+# top_genre = (df.groupby('genre')
+#              ['global_sales'].sum()
+#              .sort_values(ascending=False)
+#              .head(10)
+#              .reset_index())
 
-plt.figure(figsize=(12,7))
-sns.barplot(data=top_genre, x='global_sales', y='genre', hue='genre', palette='viridis', legend=False)
-plt.title('Топ 10 жанрів за продажами')
-plt.xlabel('Продажі')
-plt.ylabel('Жанр')
-plt.show()
+# plt.figure(figsize=(12,7))
+# sns.barplot(data=top_genre, x='global_sales', y='genre', hue='genre', palette='viridis', legend=False)
+# plt.title('Топ 10 жанрів за продажами')
+# plt.xlabel('Продажі')
+# plt.ylabel('Жанр')
+# plt.show()
 
-color = sns.color_palette("Set2", len(top_genre))
+# color = sns.color_palette("Set2", len(top_genre))
 
-plt.figure(figsize=(12,7))
-plt.bar(top_genre['genre'], top_genre['global_sales'],color=color)
-plt.gca().invert_yaxis()
-plt.title('Топ 10 жанрів за продажами')
-plt.xlabel('Продажі')
-plt.ylabel('Жанр')
+# plt.figure(figsize=(12,7))
+# plt.bar(top_genre['genre'], top_genre['global_sales'],color=color)
+# plt.gca().invert_yaxis()
+# plt.title('Топ 10 жанрів за продажами')
+# plt.xlabel('Продажі')
+# plt.ylabel('Жанр')
+# plt.show()
+
+
+
+# platform_sales = (df.groupby('platform')['global_sales'].sum().reset_index())
+
+
+
+# plt.figure(figsize=(12, 8))
+# sns.boxplot(data=df, x='platform', y='global_sales',
+#             hue='platform', palette='Set2', legend=False)
+# plt.xticks(rotation=45)
+# plt.show()
+
+# plt.figure(figsize=(12, 8))
+# sns.boxplot(x='primary_region', y='global_sales', data=df, palette='Set1', hue='primary_region', legend=False)
+# plt.title('Розподіл продажів за регіонами')
+# plt.xlabel('Регіон')
+# plt.ylabel('Продажі (мільйони одиниць)')
+# plt.show()
+
+print(df[['genre', 'platform', 'primary_region', 'global_sales']].isnull().sum())
+
+df = df.dropna(subset=['genre', 'platform', 'primary_region'])
+
+numerical_cols = ['global_sales', 'na_sales', 'eu_sales', 'jp_sales', 'other_sales']
+
+corr_matrix = df[numerical_cols].corr()
+
+print("Кореляційна матриця:")
+print(corr_matrix)
+
+plt.figure(figsize=(10, 8))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
+plt.title('Кореляційна матриця продажів за регіонами')
 plt.show()
