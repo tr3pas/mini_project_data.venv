@@ -41,15 +41,16 @@ genre_sales = df.groupby('genre')['global_sales'].sum().nlargest(5).reset_index(
 print("Топ 5 жанрів за сумарними продажами:")
 print(genre_sales)
 
-df['Region'] = df[['na_sales', 'eu_sales', 'jp_sales', 'other_sales']].sum(axis=1)
+df['region'] = df[['na_sales', 'eu_sales', 'jp_sales', 'other_sales']].sum(axis=1)
 
 def categorize_region(row):
     if row['na_sales'] > row[['eu_sales', 'jp_sales', 'other_sales']].max():
-        return 'NA'
+        return 'na'
     elif row['eu_sales'] > row[['na_sales', 'jp_sales', 'other_sales']].max():
-        return 'EU'
+        return 'eu'
     elif row['jp_sales'] > row[['na_sales', 'eu_sales', 'other_sales']].max():
-        return 'JP'
+        return 'jp'
+    
     else:
         return 'Other'
 
